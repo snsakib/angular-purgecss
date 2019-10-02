@@ -1,27 +1,79 @@
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) === false">
-    <mat-toolbar>Menu</mat-toolbar>
+<mat-sidenav-container
+  class="sidenav-container"
+  (swiperight)="drawer.open()"
+  (swipeleft)="drawer.close()"
+>
+  <!-- Menu -->
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport="true"
+    role="navigation"
+    mode="over"
+    opened="false"
+  >
+    <mat-toolbar>
+      <!-- Logo -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 104 104" fill="none">
+        <path
+          fill="#5688c7"
+          fill-rule="evenodd"
+          d="M2 1H1v103h103V1H2zm2 100V4h97v97H4zm66-68H52l18 20V33zM33 45l24 28 10-2c2-2 3-5 3-9L46 33c-4 0-8 1-10 3s-3 5-3 9zm17 28L33 53v20h17z"
+          clip-rule="evenodd"
+        />
+      </svg>
+    </mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item href="#">Link 1</a>
-      <a mat-list-item href="#">Link 2</a>
-      <a mat-list-item href="#">Link 3</a>
+      <a
+        *ngFor="let page of pages"
+        mat-list-item
+        href="{{ page.href }}"
+        (click)="drawer.toggle()"
+        class="nav-link"
+        ><span>{{ page.linkText }}</span></a
+      >
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <mat-toolbar color="primary">
+    <!-- Navbar -->
+    <mat-toolbar>
       <button
         type="button"
         aria-label="Toggle sidenav"
-        mat-icon-button
         (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async">
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        *ngIf="isLaptop ? false : true"
+        id="menuIcon"
+      >
+        <!-- menu icon -->
+        &#9776;
       </button>
-      <span>angular-purgecss</span>
+      <a href="/about" id="navbar-logo">
+        <!-- Logo -->
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 104 104"
+          fill="none"
+        >
+          <path
+            fill="#5688c7"
+            fill-rule="evenodd"
+            d="M2 1H1v103h103V1H2zm2 100V4h97v97H4zm66-68H52l18 20V33zM33 45l24 28 10-2c2-2 3-5 3-9L46 33c-4 0-8 1-10 3s-3 5-3 9zm17 28L33 53v20h17z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </a>
+      <mat-nav-list *ngIf="isLaptop">
+        <a
+          *ngFor="let page of pages"
+          mat-list-item
+          href="{{ page.href }}"
+          class="nav-link"
+          ><span>{{ page.linkText }}</span>
+        </a>
+      </mat-nav-list>
     </mat-toolbar>
-    <!-- Add Content Here -->
+
+    <!-- router outlet -->
+    This is the main page content
   </mat-sidenav-content>
 </mat-sidenav-container>
